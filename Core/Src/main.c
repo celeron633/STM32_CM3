@@ -94,6 +94,28 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   printf("hello world\r\n");
+
+  int mspVal;
+  int pspVal;
+  int inputListVal = 0;
+
+  asm volatile (
+    "mrs r0, msp\n\t"
+    "str r0, %0\n\t"
+    "mrs r0, psp\n\t"
+    "str r0, %1\n\t"
+    "mov r0, #3\n\t"
+    "str r0, [%2]\n\t"
+    // 输出列表
+    :"=&m"(mspVal), "=&m"(pspVal)
+    // 输入列表
+    :"r"(&inputListVal)
+    // 破坏描述
+    : "r0", "memory"
+    );
+
+    printf("msp=%08x, psp=%08x\r\n", mspVal, pspVal);
+    printf("inputListVal=%08x\r\n", inputListVal);
   /* USER CODE END 2 */
 
   /* Infinite loop */
