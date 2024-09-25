@@ -99,23 +99,32 @@ int main(void)
   int pspVal;
   int inputListVal = 0;
 
+  int xPSRVal = 0;
+
+  // volatile: 汇编不进行优化, 保持原样
   asm volatile (
     "mrs r0, msp\n\t"
     "str r0, %0\n\t"
     "mrs r0, psp\n\t"
     "str r0, %1\n\t"
     "mov r0, #3\n\t"
-    "str r0, [%2]\n\t"
+    "str r0, [%3]\n\t"
+    "movs r1, #1\n\t"
+    "subs r1, r1, #2\n\t"
+  
+    "mrs r0, APSR\n\t"
+    "str r0, %2"
     // 输出列表
-    :"=&m"(mspVal), "=&m"(pspVal)
+    :"=m"(mspVal), "=m"(pspVal), "=m"(xPSRVal)
     // 输入列表
     :"r"(&inputListVal)
     // 破坏描述
-    : "r0", "memory"
+    : "r0", "r1", "memory"
     );
 
     printf("msp=%08x, psp=%08x\r\n", mspVal, pspVal);
     printf("inputListVal=%08x\r\n", inputListVal);
+    printf("xPSR=%08x\r\n", xPSRVal);
   /* USER CODE END 2 */
 
   /* Infinite loop */
