@@ -23,6 +23,7 @@ target_include_directories(userlib INTERFACE
 
 target_sources(userlib INTERFACE
     ../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
+    ../../User/Src/atomic.c
 )
 
 target_link_directories(userlib INTERFACE

@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+
+#include "atomic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -219,7 +221,8 @@ int main(void)
     setValue2(&testVal, 200);
     printf("testVal=%d\r\n", testVal);
 
-    ldrTest();
+    // ldrTest();
+    atomic_test();
 
   /* USER CODE END 2 */
 
