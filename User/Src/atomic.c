@@ -15,11 +15,12 @@ void atomic_test()
     asm volatile
     (
         "mov r0, #12\n"
-        "str r0, [%0]"
+        "str r0, %0"
         :
-        :"p"(ptr)
+        :"Q"(*ptr)
         :"r0"
     );
+
     // printf("a=%d\r\n", a);
     int str_ret = a_sc(ptr, 50);
     printf("a=%d, str_ret=%d, old=%d\r\n", a, str_ret, old);
