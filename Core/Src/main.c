@@ -25,8 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 
-#include "atomic.h"
-#include "ldrTest.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,14 +97,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("hello world\r\n");
 
-  int testVal = 0;
-  printf("testVal=%d\r\n", testVal);
-  setValue(&testVal, 100);
-  printf("testVal=%d\r\n", testVal);
-  setValue2(&testVal, 200);
-  printf("testVal=%d\r\n", testVal);
-  // ldrTest();
-  atomic_test();
+  asm volatile("svc 5":::"memory");
 
   /* USER CODE END 2 */
 
@@ -113,6 +105,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    printf("running...\r\n");
+    HAL_Delay(3000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

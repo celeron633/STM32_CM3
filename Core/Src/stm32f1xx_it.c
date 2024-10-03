@@ -22,6 +22,7 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+int g_svcNumber = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -143,8 +144,24 @@ void UsageFault_Handler(void)
   */
 void SVC_Handler(void)
 {
+  asm volatile
+  (
+    "mrs r0, msp\n"
+    // 原本PC离MSP偏移为24, 加了函数调用APCS的push {r7, lr}一起32
+    "add r0, r0, #32\n"
+    // 得到异常返回PC的值
+    "ldr r0, [r0]\n"
+    // 取上一条指令
+    "sub r0, r0, #2\n"
+    // 第一个字节
+    "ldrb r0, [r0]\n"
+    "mov %0, r0"
+    : "=r"(g_svcNumber)
+    :
+    : "r0", "memory"
+  );
   /* USER CODE BEGIN SVCall_IRQn 0 */
-
+  printf("svc handler! svc number=%d\r\n", g_svcNumber);
   /* USER CODE END SVCall_IRQn 0 */
   /* USER CODE BEGIN SVCall_IRQn 1 */
 
